@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/db/wallet/migrations/000001_init_ledger.down.sql" value="e0c361f1-39f7-40cc-9f27-19925396f74d" />
+    <file url="file://$PROJECT_DIR$/db/wallet/migrations/000001_init_ledger.up.sql" value="e0c361f1-39f7-40cc-9f27-19925396f74d" />
+    <file url="file://$PROJECT_DIR$/scratch.sql" value="e0c361f1-39f7-40cc-9f27-19925396f74d" />
+  </component>
+</project>
