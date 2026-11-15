@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/gepe-projects/payment/internal/platform/apperr"
 	"github.com/gepe-projects/payment/internal/wallet/walletdb"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -27,8 +28,9 @@ const (
 	Credit = walletdb.EntryDirectionCredit
 )
 
-// ErrAccountNotFound is returned when an account does not exist.
-var ErrAccountNotFound = errors.New("wallet: account not found")
+// ErrAccountNotFound is returned when an account does not exist. It wraps
+// apperr.ErrNotFound, so the HTTP layer answers with a 404.
+var ErrAccountNotFound = fmt.Errorf("account %w", apperr.ErrNotFound)
 
 type Store struct {
 	pool *pgxpool.Pool

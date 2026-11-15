@@ -18,7 +18,6 @@ migrate-new:
 	@test -n "$(name)" || (echo "usage: make migrate-new name=add_something" && exit 1)
 	migrate create -ext sql -dir db/$(SERVICE)/migrations -seq $(name)
 
-
 .PHONY: generate test
 
 # Regenerate the Go code for every service's SQL queries.
@@ -31,3 +30,12 @@ export WALLET_TEST_DATABASE_URL
 
 test:
 	@go test -count=1 $(TESTFLAGS) ./...
+
+.PHONY: run-wallet
+
+# Run the wallet service against the local database, stamped with a git version.
+VERSION ?= $(shell git describe --always --dirty)
+
+run-wallet:
+	@go build -ldflags "-X main.version=$(VERSION)" -o bin/wallet ./cmd/wallet
+	@WALLET_DATABASE_URL="$(DB_URL)" ./bin/wallet

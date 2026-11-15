@@ -18,7 +18,7 @@ func newStore(t *testing.T) *wallet.Store {
 	if dsn == "" {
 		t.Skip("WALLET_TEST_DATABASE_URL is not set")
 	}
-	pool, err := postgres.NewPool(t.Context(), dsn)
+	pool, err := postgres.NewPool(t.Context(), dsn, 4)
 	if err != nil {
 		t.Fatalf("connect to database: %v", err)
 	}
