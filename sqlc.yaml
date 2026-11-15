@@ -1,0 +1,35 @@
+version: "2"
+sql:
+  - engine: postgresql
+    schema: db/wallet/migrations
+    queries: db/wallet/queries
+    gen:
+      go:
+        package: walletdb
+        out: internal/wallet/walletdb
+        sql_package: pgx/v5
+        emit_json_tags: true
+        emit_empty_slices: true
+        emit_enum_valid_method: true
+        overrides:
+          # uuid NOT NULL -> uuid.UUID
+          - db_type: uuid
+            go_type:
+              import: uuid
+              type: UUID
+          # uuid nullable -> *uuid.UUID (NULL jadi nil)
+          - db_type: uuid
+            nullable: true
+            go_type:
+              import: uuid
+              type: UUID
+              pointer: true
+          # timestamptz NOT NULL -> time.Time
+          - db_type: timestamptz
+            go_type:
+              import: time
+              type: Time
+          # opsional, kalau nanti ada timestamptz nullable:
+          # - db_type: timestamptz
+          #   nullable: true
+          #   go_type: { import: time, type: Time, pointer: true }
