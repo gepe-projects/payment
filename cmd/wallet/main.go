@@ -8,6 +8,7 @@ import (
 	"github.com/gepe-projects/payment/internal/platform/httpx"
 	"github.com/gepe-projects/payment/internal/platform/logging"
 	"github.com/gepe-projects/payment/internal/platform/postgres"
+	"github.com/gepe-projects/payment/internal/wallet"
 	"log/slog"
 	"net/http"
 	"os"
@@ -62,6 +63,11 @@ func main() {
 		}
 		httpx.WriteJSON(w, r, http.StatusOK, map[string]string{"status": "ready"})
 	})
+
+	// The wallet API, and a JSON 404 for everything else.
+	svc := wallet.NewService(wallet.NewStore(pool))
+	wallet.NewHandler(svc).Register(mux)
+
 	mux.HandleFunc("/", httpx.NotFound)
 	mux.HandleFunc("GET /panic", func(w http.ResponseWriter, r *http.Request) {
 		panic("ANJINNGG")
