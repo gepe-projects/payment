@@ -41,3 +41,10 @@ VERSION ?= $(shell git describe --always --dirty)
 run-wallet:
 	@go build -ldflags "-X main.version=$(VERSION)" -o bin/wallet ./cmd/wallet
 	@WALLET_DATABASE_URL="$(DB_URL)" ./bin/wallet
+
+.PHONY: reset
+
+reset:
+	@docker compose down -v
+	@docker compose up -d --wait
+	@make migrate-up
